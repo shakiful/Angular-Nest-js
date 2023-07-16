@@ -60,7 +60,7 @@ export class WeatherComponent implements OnInit {
     });
   }
 
-  onTableDataChange(pageNumber: any) {
+  onTableDataChange(pageNumber: any, tableSize: number) {
     console.log(pageNumber);
 
     this.page = pageNumber;

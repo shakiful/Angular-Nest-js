@@ -2,7 +2,7 @@
   <div>
     <p>
       Items Per Page
-      <select (change)="onTableDataChange($event)" [(ngModel)]="tableSize">
+      <select (change)="onTableDataChange(page,$event)" [(ngModel)]="tableSize">
         <option *ngFor="let size of tableSizes" value="{{ size }}">
           {{ size }}
         </option>
@@ -64,6 +64,6 @@
   <pagination-controls
     previousLabel="Prev"
     nextLabel="Next"
-    (pageChange)="onTableDataChange($event)"
+    (pageChange)="onTableDataChange($event,tableSize)"
   ></pagination-controls>
 </div>
