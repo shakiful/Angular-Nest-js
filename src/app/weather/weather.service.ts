@@ -17,4 +17,8 @@ export class WeatherService {
     return this.http.get<any>(`${apiUrl}?page=${page}&limit=${limit}`);
 
   }
+
+  deleteWeather(id){
+    
+  }
 }

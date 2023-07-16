@@ -1,4 +1,5 @@
 export interface WeatherData {
+  id: number;
   weatherType: string;
   icon: string;
   temp: number;

@@ -1,18 +1,3 @@
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-img {
-  width: 32px;
-  height: 32px;
-}
 
 .pagination {
   display: flex;
@@ -36,4 +21,96 @@ img {
 .pagination li.disabled {
   cursor: not-allowed;
   background-color: #f2f2f2;
+}
+
+/* weather.component.css */
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+img {
+  width: 30px;
+  height: 30px;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  color: #fff;
+  background-color: #e74c3c;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c0392b;
+}
+
+
+/* Styles for the "Items Per Page" dropdown */
+p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Style for the dropdown arrow */
+select::-ms-expand {
+  display: none;
+}
+
+select:hover {
+  border-color: #aaa;
+}
+
+select:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* Style for the dropdown arrow icon */
+.select-arrow {
+  position: relative;
+  top: -2px;
+  right: 0;
+  margin-left: 10px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #666;
+  cursor: pointer;
+}
+
+/* Style the options inside the dropdown */
+option {
+  padding: 8px;
+  background-color: #fff;
+  color: #333;
 }

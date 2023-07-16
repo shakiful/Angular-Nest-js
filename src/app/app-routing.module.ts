@@ -8,6 +8,7 @@ const appRoutes: Routes = [
   { path: 'auth', loadChildren:() => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'settings', loadChildren:() => import('./settings/settings.module').then(m => m.SettingsModule) },
   { path: 'weather', loadChildren:() => import('./weather/weather.module').then(m => m.WeatherModule) },
+  { path: 'chart', loadChildren:() => import('./chart/chart.module').then(m => m.ChartModule) },
 
 
   // { path: 'not-found', component: ShoppingListComponent },
