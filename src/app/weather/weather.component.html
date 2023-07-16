@@ -1,0 +1,67 @@
+<div class="container">
+  <div>
+    <p>
+      Items Per Page
+      <select (change)="onTableDataChange($event)" [(ngModel)]="tableSize">
+        <option *ngFor="let size of tableSizes" value="{{ size }}">
+          {{ size }}
+        </option>
+      </select>
+    </p>
+  </div>
+  <table style="margin-top: 10px; margin-bottom: 10px;">
+    <thead>
+      <tr>
+        <th>Serial</th>
+        <th>Weather Type</th>
+        <th>Icon</th>
+        <th>Temperature</th>
+        <th>Feels Like</th>
+        <th>Min Temp</th>
+        <th>Max Temp</th>
+        <th>Pressure</th>
+        <th>Humidity</th>
+        <th>Visibility</th>
+        <th>Wind Speed</th>
+        <th>Wind Degree</th>
+        <th>Clouds</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let weather of weatherData
+            | paginate
+              : {
+                  itemsPerPage: tableSize,
+                  currentPage: page,
+                  totalItems: count
+                };
+          let i = index
+        "
+      >
+        <td>{{ weather.id }}</td>
+        <td>{{ weather.weatherType }}</td>
+        <td><img [src]="weather.icon" [alt]="weather.weatherType" /></td>
+        <td>{{ weather.temp }}</td>
+        <td>{{ weather.feelsLike }}</td>
+        <td>{{ weather.tempMin }}</td>
+        <td>{{ weather.tempMax }}</td>
+        <td>{{ weather.pressure }}</td>
+        <td>{{ weather.humidity }}</td>
+        <td>{{ weather.visibility }}</td>
+        <td>{{ weather.windSpeed }}</td>
+        <td>{{ weather.windDeg }}</td>
+        <td>{{ weather.clouds }}</td>
+        <td>{{ weather.dt | date : "medium" }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls
+    previousLabel="Prev"
+    nextLabel="Next"
+    (pageChange)="onTableDataChange($event)"
+  ></pagination-controls>
+</div>
