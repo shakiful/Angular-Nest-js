@@ -13,12 +13,8 @@ export class WeatherService {
   fetchWeatherData(page: number, limit: number): Observable<any> {
     const apiUrl = `http://localhost:3000/api/weather/paginated`;
 
-    let params = new HttpParams();
-    params = params.set('page', page);
-    params = params.set('limit', limit);
-
     // Send the API request with the params
-    return this.http.get(apiUrl, { params });
+    return this.http.get<any>(`${apiUrl}?page=${page}&limit=${limit}`);
 
   }
 }
