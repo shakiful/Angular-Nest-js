@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { WeatherData } from './weather.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +10,15 @@ export class WeatherService {
   constructor(private http:HttpClient) {}
 
 
-  fetchWeatherData(): Observable<any> {
-    const apiUrl = `http://localhost:3000/api/weather/`;
+  fetchWeatherData(page: number, limit: number): Observable<any> {
+    const apiUrl = `http://localhost:3000/api/weather/paginated`;
 
-    return this.http.get(apiUrl);
+    let params = new HttpParams();
+    params = params.set('page', page);
+    params = params.set('limit', limit);
+
+    // Send the API request with the params
+    return this.http.get(apiUrl, { params });
+
   }
 }

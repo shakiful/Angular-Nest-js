@@ -26,7 +26,7 @@ export class WeatherComponent implements OnInit {
   }
 
   fetchWeatherData() {
-    this.weatherService.fetchWeatherData().subscribe((response: any) => {
+    this.weatherService.fetchWeatherData(this.page,this.tableSize).subscribe((response: any) => {
       this.weatherData = response.map(
         (forecast: any) => ({
           id:forecast.id,
@@ -62,10 +62,6 @@ export class WeatherComponent implements OnInit {
   }
 
   onTableSizeChange(event: any) {
-    // this.weatherData = this.weatherData.slice(
-    //   (this.currentPage - 1) * this.itemsPerPage,
-    //   this.currentPage * this.itemsPerPage
-    // );
     this.tableSize = event.target.value;
     this.page = 1;
     this.fetchWeatherData();
