@@ -1,22 +1,24 @@
-import { Component, Inject, NgZone, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 // amCharts imports
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import * as am5 from '@amcharts/amcharts5';
+import * as am5xy from '@amcharts/amcharts5/xy';
+import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss']
+  styleUrls: ['./chart.component.scss'],
 })
+export class ChartComponent implements OnInit {
+  private root!: am5.Root;
 
-export class ChartComponent {
-  private chart: am4charts.XYChart;
-  
-
-  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private zone: NgZone
+  ) {}
+  ngOnInit(): void {}
 
   // Run the function only in the browser
   browserOnly(f: () => void) {
@@ -30,48 +32,111 @@ export class ChartComponent {
   ngAfterViewInit() {
     // Chart code goes in here
     this.browserOnly(() => {
-      am4core.useTheme(am4themes_animated);
+      let root = am5.Root.new('chartdiv');
 
-      let chart = am4core.create("chartdiv", am4charts.XYChart);
+      root.setThemes([am5themes_Animated.new(root)]);
 
-      chart.paddingRight = 20;
+      let chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+          panY: false,
+          layout: root.verticalLayout,
+        })
+      );
 
-      let data = [];
-      let visits = 10;
-      for (let i = 1; i < 366; i++) {
-        visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-        data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
+      // Define data
+      let data = [
+        {
+          Date: 'Nov',
+          value1: 1000,
+          value2: 588,
+        },
+        {
+          Date: 'Oct',
+          value1: 1200,
+          value2: 1800,
+        },
+        {
+          Date: 'Dec',
+          value1: 850,
+          value2: 1230,
+        },
+      ];
+
+      // Create Y-axis
+      let yAxis = chart.yAxes.push(
+        am5xy.ValueAxis.new(root, {
+          min: 0,
+          renderer: am5xy.AxisRendererY.new(root, {}),
+        })
+      );
+
+      // Create X-Axis
+      let xAxis = chart.xAxes.push(
+        am5xy.CategoryAxis.new(root, {
+          renderer: am5xy.AxisRendererX.new(root, {}),
+          categoryField: 'Date',
+        })
+      );
+      xAxis.data.setAll(data);
+
+      // Add scrollbar
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+      chart.set(
+        'scrollbarX',
+        am5.Scrollbar.new(root, {
+          orientation: 'horizontal',
+        })
+      );
+
+      // Create series
+      function makeSeries(name, value) {
+        let series = chart.series.push(
+          am5xy.ColumnSeries.new(root, {
+            name: name,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueYField: value,
+            categoryXField: 'Date',
+          })
+        );
+
+        series.columns.template.setAll({
+          tooltipText: "{name}, {categoryX}:{value1.formatNumber('#.#')}°",
+          tooltipY: am5.percent(10),
+        });
+        series.appear();
+
+        series.bullets.push(function () {
+          return am5.Bullet.new(root, {
+            sprite: am5.Label.new(root, {
+              text: "{name} {value1.formatNumber('#.#')}°",
+              fill: root.interfaceColors.get('alternativeText'),
+              centerY: am5.p50,
+              centerX: am5.p50,
+              populateText: true,
+            }),
+          });
+        });
+
+        series.data.setAll(data);
       }
 
-      chart.data = data;
+      makeSeries('Temperature', 'value1');
+      makeSeries('Feels Like', 'value2');
 
-      let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-      dateAxis.renderer.grid.template.location = 0;
+      // Add legend
+      let legend = chart.children.push(am5.Legend.new(root, {}));
+      legend.data.setAll(chart.series.values);
 
-      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-      valueAxis.tooltip.disabled = true;
-      valueAxis.renderer.minWidth = 35;
-
-      let series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.dateX = "date";
-      series.dataFields.valueY = "value";
-      series.tooltipText = "{valueY.value}";
-
-      chart.cursor = new am4charts.XYCursor();
-
-      let scrollbarX = new am4charts.XYChartScrollbar();
-      scrollbarX.series.push(series);
-      chart.scrollbarX = scrollbarX;
-
-      this.chart = chart;
+      this.root = root;
     });
   }
 
   ngOnDestroy() {
     // Clean up chart when the component is removed
     this.browserOnly(() => {
-      if (this.chart) {
-        this.chart.dispose();
+      if (this.root) {
+        this.root.dispose();
       }
     });
   }
