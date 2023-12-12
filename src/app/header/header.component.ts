@@ -1,15 +1,12 @@
 import {
   Component,
-  EventEmitter,
   OnDestroy,
   OnInit,
-  Output,
 } from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { UserRoles } from '../auth/user.enum.model';
 
 @Component({
   selector: 'app-header',

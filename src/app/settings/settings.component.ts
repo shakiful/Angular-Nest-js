@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService, AuthResponseData } from '../auth/auth.service';
+import { AuthService} from '../auth/auth.service';
 import { UserRoles } from '../auth/user.enum.model';
 
 @Component({

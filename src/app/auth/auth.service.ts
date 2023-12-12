@@ -3,8 +3,8 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Injectable, Input } from '@angular/core';
-import { BehaviorSubject, Subject, catchError, tap, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 import { UserRoles } from './user.enum.model';
